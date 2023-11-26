@@ -1,73 +1,90 @@
 package es.grise.upm.profundizacion.mocking.exercise2;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class EngineControllerTest {
 
-    @Mock
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final Timestamp ts = new Timestamp(System.currentTimeMillis());
+
     private Logger loggerMock;
-
-    @Mock
     private Speedometer speedometerMock;
-
-    @Mock
     private Gearbox gearboxMock;
-
-    @Mock
     private Time timeMock;
-
     private EngineController engineController;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        this.loggerMock = mock(Logger.class);
+        this.speedometerMock = mock(Speedometer.class);
+        this.gearboxMock = mock(Gearbox.class);
+        this.timeMock = mock(Time.class);
         engineController = new EngineController(loggerMock, speedometerMock, gearboxMock, timeMock);
     }
 
-    @Test
-    public void testRecordGear() {
-        GearValues newGear = GearValues.FIRST_GEAR;
+    @Test //El mensaje de log tieme el formato correcto (método recordGear()).
+    public void test_recordGear() {
+        ArgumentCaptor<String> valueCapture = ArgumentCaptor.forClass(String.class);
+        doNothing().when(loggerMock).log(valueCapture.capture());
 
-        engineController.recordGear(newGear);
+        when(timeMock.getCurrentTime()).thenReturn(ts);
+        this.engineController.recordGear(GearValues.FIRST);
 
-        // Verify that the logger's log method is called with the expected parameters
-        verify(loggerMock).log("Gear changed to: " + newGear);
+        String expectedLog = sdf.format(ts) + " Gear changed to " + GearValues.FIRST;
+        assertEquals(valueCapture.getValue(), expectedLog);
     }
 
-    @Test
-    public void testGetInstantaneousSpeed() {
-        double expectedSpeed = 50.0;
+    @Test //Se calcula correctamente la velocidad instantánea (método getInstantaneousSpeed()).
+    public void test_getInstantaneousSpeed() {
+        when(speedometerMock.getSpeed()).thenReturn(10.0, 20.0, 30.0);
 
-        // Configure the speedometer mock to return the expected speed
-        when(speedometerMock.getSpeed()).thenReturn(expectedSpeed);
+        double expectedAverageSpeed = 20.0;
+        double actualAverageSpeed = engineController.getInstantaneousSpeed();
 
-        double result = engineController.getInstantaneousSpeed();
-
-        // Verify that the speedometer's getSpeed method is called
-        verify(speedometerMock).getSpeed();
-
-        // Verify that the returned speed matches the expected speed
-        assertEquals(expectedSpeed, result, 0.01);
+        assertEquals(expectedAverageSpeed, actualAverageSpeed);
     }
 
-    @Test
-    public void testSetGear() {
-        GearValues newGear = GearValues.SECOND_GEAR;
+    @Test //El método adjustGear invoca exactamente tres veces al método getInstantaneousSpeed().
+    public void test_adjustGear_getInstantaneousSpeed() {
+        when(timeMock.getCurrentTime()).thenReturn(ts);
+        when(speedometerMock.getSpeed()).thenReturn(25.0);
+        this.engineController.adjustGear();
 
-        engineController.setGear(newGear);
-
-        // Verify that the gearbox's setGear method is called with the expected gear
-        verify(gearboxMock).setGear(newGear);
+        verify(speedometerMock, times(3)).getSpeed();
     }
 
-    @Test
-    public void testAdjustGear() {
-        // Add your test case for the adjustGear method here
+    @Test //El método adjustGear loguea la nueva marcha (método recordGear()).
+    public void test_adjustGear_recordGear() {
+        ArgumentCaptor<String> valueCapture = ArgumentCaptor.forClass(String.class);
+        doNothing().when(loggerMock).log(valueCapture.capture());
+
+        when(timeMock.getCurrentTime()).thenReturn(ts);
+        when(speedometerMock.getSpeed()).thenReturn(25.0);
+        this.engineController.adjustGear();
+
+        String expectedLog = sdf.format(ts) + " Gear changed to " + GearValues.STOP;
+        assertEquals(valueCapture.getValue(), expectedLog);
     }
+
+    @Test //El método adjustGear asigna correctamente la nueva marcha (método setGear()).
+    public void test_adjustGear_setGear() {
+        when(timeMock.getCurrentTime()).thenReturn(ts);
+        when(speedometerMock.getSpeed()).thenReturn(25.0);
+        this.engineController.adjustGear();
+
+        verify(gearboxMock, times(1)).setGear(GearValues.STOP);
+    }
+
+
 }
 
 
