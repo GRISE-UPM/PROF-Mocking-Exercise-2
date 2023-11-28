@@ -18,7 +18,6 @@ public class EngineControllerTest {
     @DisplayName("Comprueba si mensaje de log tiene el formato correcto (método recordGear())")
     @Test
     void testLogMessageWithCorrectFormat() {
-
         GearValues gearValue = GearValues.FIRST;
         when(mockTime.getCurrentTime()).thenReturn(new Timestamp(1679786700000L));
         engineController.recordGear(gearValue);
