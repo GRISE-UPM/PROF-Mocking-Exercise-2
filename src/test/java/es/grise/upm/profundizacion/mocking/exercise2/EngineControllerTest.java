@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -34,8 +35,8 @@ public class EngineControllerTest {
         engController = new EngineController(logger, speedo, gearBox, time);
     }
 
-
     @Test
+    @DisplayName(value = "Test 1 : El mensaje de log tiene el formato correcto (método recordGear())")
     void whenCallingRecordGearOutputIsCorrect(){
         engController.recordGear(GearValues.FIRST);
         ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
@@ -47,6 +48,7 @@ public class EngineControllerTest {
     }
 
     @Test
+    @DisplayName(value = "Test 2 : Se calcula correctamente la velocidad instantánea (método getInstantaneousSpeed())")
     void whenCallingGetInstantaneousSpeed_SpeedIsCorrect(){
         Mockito.when(speedo.getSpeed())
         .thenReturn(0.0)
@@ -58,6 +60,15 @@ public class EngineControllerTest {
     }
 
     @Test
+    @DisplayName(value = "Test 3 : El método adjustGear invoca exactamente tres veces al método getSpeed()")
+    void whenCallingAdjustGear_getSpeedIsCalledThreeTimes(){
+        engController.adjustGear();
+        Mockito.verify(speedo, times(3)).getSpeed();
+    }
+
+
+    @Test
+    @DisplayName(value = "Test 4 : El método adjustGear registra la nueva marcha (método recordGear())")
     void whenCallingAdjustGear_recordGearIsCalled(){
         engController.adjustGear();
         Mockito.verify(logger, times(1)).log(anyString());
@@ -65,6 +76,7 @@ public class EngineControllerTest {
 
 
     @Test
+    @DisplayName(value = "Test 5 : El método adjustGear asigna correctamente la nueva marcha (método setGear())")
     void whenCallingAdjustGear_gearIsProperlyAssigned(){
         Mockito.when(speedo.getSpeed())
         .thenReturn(0.0)
@@ -75,6 +87,7 @@ public class EngineControllerTest {
     }
 
     @Test
+    @DisplayName(value = "Test 6 : El método getInstantaneousSpeed invoca exactamente getSpeed() tres veces")
     void whenCallingGetInstantaneousSpeed_getSpeedIsCalledThreeTimes(){
         engController.getInstantaneousSpeed();
         Mockito.verify(speedo, times(3)).getSpeed();
