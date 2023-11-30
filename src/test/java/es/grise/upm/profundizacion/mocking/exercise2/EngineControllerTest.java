@@ -10,15 +10,18 @@ import java.sql.Timestamp;
 
 public class EngineControllerTest {
 
+    // Global variables:
+
+    private Logger mockLogger = mock(Logger.class);
+    private Speedometer mockSpeedometer = mock(Speedometer.class);
+    private Gearbox mockGearbox = mock(Gearbox.class);
+    private Time mockTime = mock(Time.class);
+
+    private EngineController realController = new EngineController(mockLogger, mockSpeedometer, mockGearbox, mockTime); //Real controller
+
+
     @Test
     public void correctLogFormat(){
-        Logger mockLogger = mock(Logger.class);
-        Speedometer mockSpeedometer = mock(Speedometer.class);
-        Gearbox mockGearbox = mock(Gearbox.class);
-        Time mockTime = mock(Time.class);
-
-        EngineController realController = new EngineController(mockLogger, mockSpeedometer, mockGearbox, mockTime);
-
         when(mockTime.getCurrentTime()).thenReturn(new Timestamp(1701029476L)); //fake time value
         realController.recordGear(GearValues.FIRST); //call the real recorder method, so as to call "log"
 
@@ -27,12 +30,6 @@ public class EngineControllerTest {
 
     @Test
     public void correctInstantSpeed(){
-        Logger mockLogger = mock(Logger.class);
-        Speedometer mockSpeedometer = mock(Speedometer.class);
-        Gearbox mockGearbox = mock(Gearbox.class);
-        Time mockTime = mock(Time.class);
-
-        EngineController realController = new EngineController(mockLogger, mockSpeedometer, mockGearbox, mockTime); //Real Controller
         EngineController mockController = mock(EngineController.class); //Mock Controller
 
         when(mockController.getInstantaneousSpeed()).thenReturn(100.0); //set-up for the mock
@@ -46,14 +43,9 @@ public class EngineControllerTest {
 
     @Test
     public void correctCallsGetSpeed(){
-        Logger mockLogger = mock(Logger.class);
-        Speedometer mockSpeedometer = mock(Speedometer.class);
-        Gearbox mockGearbox = mock(Gearbox.class);
-        Time mockTime = mock(Time.class);
         Timestamp mockTimestamp = mock(Timestamp.class);
 
-        EngineController realController = new EngineController(mockLogger, mockSpeedometer, mockGearbox, mockTime);
-        EngineController spyController = spy(realController); //A spy, so as to use actually use methods 
+        EngineController spyController = spy(realController); //A spy, so as to actually use methods 
 
         when(mockTime.getCurrentTime()).thenReturn(mockTimestamp); //Necessary so that recordGear does not fail
 
@@ -67,14 +59,8 @@ public class EngineControllerTest {
 
     @Test
     public void correctRecordGear(){
-        Logger mockLogger = mock(Logger.class);
-        Speedometer mockSpeedometer = mock(Speedometer.class);
-        Gearbox mockGearbox = mock(Gearbox.class);
-        Time mockTime = mock(Time.class);
-
         when(mockTime.getCurrentTime()).thenReturn(new Timestamp(1701029476L)); //fake time value
 
-        EngineController realController = new EngineController(mockLogger, mockSpeedometer, mockGearbox, mockTime); //Real Controller
         EngineController spyController = spy(realController); //Spy Controller
 
         spyController.adjustGear(); // Call adjustGear
@@ -84,14 +70,8 @@ public class EngineControllerTest {
 
     @Test
     public void correctSetGear(){
-        Logger mockLogger = mock(Logger.class);
-        Speedometer mockSpeedometer = mock(Speedometer.class);
-        Gearbox mockGearbox = mock(Gearbox.class);
-        Time mockTime = mock(Time.class);
-
         when(mockTime.getCurrentTime()).thenReturn(new Timestamp(1701029476L)); //fake time value
 
-        EngineController realController = new EngineController(mockLogger, mockSpeedometer, mockGearbox, mockTime);
         EngineController spyController = spy(realController); //Spy Controller
 
         spyController.adjustGear(); // Call adjustGear
