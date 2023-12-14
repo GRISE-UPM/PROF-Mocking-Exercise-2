@@ -31,7 +31,7 @@ public class EngineController {
 	 * for: Dummy or Fake
 	 *
 	 * Logs the changes
-	 */
+	 */        
 	void recordGear(GearValues newGear) {
 		
 		logger.log(sdf.format(time.getCurrentTime()) + " Gear changed to " + newGear);
