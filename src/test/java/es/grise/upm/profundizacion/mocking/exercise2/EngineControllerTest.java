@@ -38,22 +38,6 @@ public class EngineControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test // El mensaje de log tieme el formato correcto (método recordGear()).
-    public void test_recordGear() {
-        ArgumentCaptor<String> valueCapture = ArgumentCaptor.forClass(String.class);
-        doNothing().when(mockLogger).log(valueCapture.capture());
-
-        when(mockTime.getCurrentTime()).thenReturn(this.time);
-        this.engController.recordGear(GearValues.FIRST);
-
-        String expectedLog = sdf.format(this.time) + " Gear changed to " + GearValues.FIRST;
-        assertEquals(valueCapture.getValue(), expectedLog);
-
-        verify(mockLogger, times(1)).log(anyString());
-        verify(mockTime, times(1)).getCurrentTime();
-    }
-
-
     @Test
     @DisplayName(value = "Test 1 : El mensaje de log tiene que estar en un formato correcto")
     public void testRecordGear() throws Exception {
