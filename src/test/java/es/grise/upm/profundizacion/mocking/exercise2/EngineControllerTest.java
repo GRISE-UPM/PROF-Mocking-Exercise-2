@@ -79,28 +79,6 @@ public class EngineControllerTest {
     }
 
     @Test
-    @DisplayName(value = "Test 1 : El mensaje de log tiene que estar en un formato correcto")
-    public void testRecordGear() throws Exception {
-        // Comportamiento
-        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
-        when(mockTime.getCurrentTime()).thenReturn(this.time);
-        doNothing().when(mockLogger).log(argumentCaptor.capture());
-        
-        // Llamada
-        engController.recordGear(GearValues.FIRST);
- 
-        // Captura
-        String capturedMessage = argumentCaptor.getValue();
-        
-        // Formato
-        String expectedMessage = sdf.format(this.time) + " Gear changed to " + GearValues.FIRST;
-
-        // Comprobaciones
-        assertEquals(capturedMessage, expectedMessage);
-        verify(mockLogger, times(1)).log(argumentCaptor.capture());
-    }
-
-    @Test
     @DisplayName(value = "Test 3: Comprobar tres veces que se calcula correctamente la velocidad instantánea")
     // Comprobar tres veces que se calcula correctamente la velocidad instantánea (GetInstantaneousSpeed)
     public void testAdjustGear1() throws Exception {
@@ -118,27 +96,6 @@ public class EngineControllerTest {
         Mockito.verify(mockSpeedometer, times(3)).getSpeed();
     }
 
-    @Test
-    @DisplayName(value = "Test 1 : El mensaje de log tiene que estar en un formato correcto")
-    public void testRecordGear() throws Exception {
-        // Comportamiento
-        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
-        when(mockTime.getCurrentTime()).thenReturn(this.time);
-        doNothing().when(mockLogger).log(argumentCaptor.capture());
-        
-        // Llamada
-        engController.recordGear(GearValues.FIRST);
- 
-        // Captura
-        String capturedMessage = argumentCaptor.getValue();
-        
-        // Formato
-        String expectedMessage = sdf.format(this.time) + " Gear changed to " + GearValues.FIRST;
-
-        // Comprobaciones
-        assertEquals(capturedMessage, expectedMessage);
-        verify(mockLogger, times(1)).log(argumentCaptor.capture());
-    }
 
     @Test
     @DisplayName(value = "Test 4: Loguear la nueva marcha")
@@ -158,28 +115,6 @@ public class EngineControllerTest {
     }
 
     @Test
-    @DisplayName(value = "Test 1 : El mensaje de log tiene que estar en un formato correcto")
-    public void testRecordGear() throws Exception {
-        // Comportamiento
-        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
-        when(mockTime.getCurrentTime()).thenReturn(this.time);
-        doNothing().when(mockLogger).log(argumentCaptor.capture());
-        
-        // Llamada
-        engController.recordGear(GearValues.FIRST);
- 
-        // Captura
-        String capturedMessage = argumentCaptor.getValue();
-        
-        // Formato
-        String expectedMessage = sdf.format(this.time) + " Gear changed to " + GearValues.FIRST;
-
-        // Comprobaciones
-        assertEquals(capturedMessage, expectedMessage);
-        verify(mockLogger, times(1)).log(argumentCaptor.capture());
-    }
-
-    @Test
     @DisplayName(value = "Test 5: Asigna correctamente la nueva marcha")
     public void testAdjustGear3() throws Exception {
         // Comportamiento del mockito
@@ -194,27 +129,5 @@ public class EngineControllerTest {
 
         // Comprobaciones
         Mockito.verify(mockGearbox, times(1)).setGear(GearValues.FIRST);
-    }
-
-    @Test
-    @DisplayName(value = "Test 1 : El mensaje de log tiene que estar en un formato correcto")
-    public void testRecordGear() throws Exception {
-        // Comportamiento
-        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
-        when(mockTime.getCurrentTime()).thenReturn(this.time);
-        doNothing().when(mockLogger).log(argumentCaptor.capture());
-        
-        // Llamada
-        engController.recordGear(GearValues.FIRST);
- 
-        // Captura
-        String capturedMessage = argumentCaptor.getValue();
-        
-        // Formato
-        String expectedMessage = sdf.format(this.time) + " Gear changed to " + GearValues.FIRST;
-
-        // Comprobaciones
-        assertEquals(capturedMessage, expectedMessage);
-        verify(mockLogger, times(1)).log(argumentCaptor.capture());
     }
 }
