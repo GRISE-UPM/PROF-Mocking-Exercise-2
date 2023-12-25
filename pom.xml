@@ -62,6 +62,11 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>es.upm.grise.profundizacion.2021</groupId>
+			<artifactId>control-1</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
