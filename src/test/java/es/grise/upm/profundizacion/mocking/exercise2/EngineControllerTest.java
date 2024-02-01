@@ -1,5 +1,8 @@
 package es.grise.upm.profundizacion.mocking.exercise2;
 
+// Disculpa por el retraso 
+// No habia visto el mensaje en moodle
+
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,6 +26,10 @@ public class EngineControllerTest {
         ArgumentCaptor<String> valueCapture = ArgumentCaptor.forClass(String.class);
         verify(logger, times(1)).log(valueCapture.capture());
         String expectedLoggerArg = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} Gear changed to " + gearValueFirst;
+        assertTrue(valueCapture.getValue().matches(expectedLoggerArg));
+        // verificación que faltaba en entrega anterior
+        when(speedometer.getSpeed()).thenReturn(40.0);
+        engineController.adjustGear();
         assertTrue(valueCapture.getValue().matches(expectedLoggerArg));}
 
     @Test
