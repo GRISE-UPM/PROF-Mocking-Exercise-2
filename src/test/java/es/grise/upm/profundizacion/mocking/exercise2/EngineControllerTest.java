@@ -4,11 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 public class EngineControllerTest {
@@ -42,7 +40,10 @@ public class EngineControllerTest {
     @Test
     public void instantaneousSpeedTest() {
 
-        when(speedometer.getSpeed()).thenReturn(10.0);
+        when(speedometer.getSpeed()).
+        thenReturn(10.0).
+        thenReturn(20.0).
+        thenReturn(30.0);
 
         double result = engineController.getInstantaneousSpeed();
 
@@ -50,7 +51,7 @@ public class EngineControllerTest {
         verify(speedometer, times(3)).getSpeed();
 
         //verificamos que el resultado es el esperado
-        assertEquals(10.0, result, "Compara resultado esperado y el obtenido" );
+        assertEquals(20.0, result, "Compara resultado esperado y el obtenido" );
     }
 
     @Test
@@ -78,7 +79,6 @@ public class EngineControllerTest {
         engineController.adjustGear();
 
         verify(logger).log(Mockito.anyString());
-        //verify(logger).log("1970-01-01 01:00:00 Gear changed to FIRST");
     }
     
 }
