@@ -25,13 +25,13 @@ public class EngineControllerTest {
 
 	@Test
 	public void testRecordGearCorrectFormat() {
-        GearValues gear = GearValues.FIRST;
-        Timestamp timestamp = new Timestamp(1000);
-        when(time.getCurrentTime()).thenReturn(timestamp);
-
+		GearValues gear = GearValues.FIRST;
+		Timestamp timestamp = new Timestamp(1000);
+		when(time.getCurrentTime()).thenReturn(timestamp);
+		
 		//el mensaje logueado debe ser el correcto con el tiempo de timestamp y la marcha de gear
-        engineController.recordGear(gear);
-        verify(logger).log("1970-01-01 01:00:01 Gear changed to FIRST");
+		engineController.recordGear(gear);
+		verify(logger).log("1970-01-01 01:00:01 Gear changed to FIRST");
 		
 	}
 	@Test
