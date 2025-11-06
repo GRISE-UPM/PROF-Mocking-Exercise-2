@@ -4,7 +4,7 @@ Este código contiene una serie de clases que simulan el cambio de marchas de un
 
 **Se pide:** Implementar las siguientes pruebas sobre la clase ``EngineController``, utilizando *mocks*:
 
-*   El mensaje de log tieme el formato correcto (método ``recordGear()``).
+*   El mensaje de log tiene el formato correcto (método ``recordGear()``).
 *   Se calcula correctamente la velocidad instantánea (método ``getInstantaneousSpeed()``).
 *   El método ``adjustGear`` invoca exactamente tres veces al método ``getInstantaneousSpeed()``.
 *   El método ``adjustGear`` loguea la nueva marcha (método ``recordGear()``).
