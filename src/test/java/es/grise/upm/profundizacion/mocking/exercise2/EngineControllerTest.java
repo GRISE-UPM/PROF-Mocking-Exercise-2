@@ -64,11 +64,13 @@ public class EngineControllerTest {
     }
 
     @Test
-    void adjustGear3TimesInvokesInstSpeedTest() {
+    void adjustGear3TimesInvokesSpeedTest() {
 
         when(speedometer.getSpeed()).thenReturn(10.0);
 
         engineController.getInstantaneousSpeed();
+        //Specification says method InstantaneousSpeed, but we assume it is wrong
+        //as it is only called 1 time
         verify(speedometer, times(3)).getSpeed();
     }
 
